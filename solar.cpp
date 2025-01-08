@@ -34,6 +34,22 @@ struct Planet
     }
 };
 
+void DrawStarsOnce(vector<Vector2>& stars, int screenWidth, int screenHeight, int starCount) {
+    if (stars.empty()) {
+        for (int i = 0; i < starCount; ++i) {
+            stars.push_back({
+                static_cast<float>(GetRandomValue(0, screenWidth)),
+                static_cast<float>(GetRandomValue(0, screenHeight))
+            });
+        }
+    }
+
+    for (const auto& star : stars) {
+        //draws pixel in space 
+        DrawPixel(static_cast<int>(star.x), static_cast<int>(star.y), WHITE);
+    }
+}
+
 int main()
 {
     // Window init
@@ -43,6 +59,7 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "Solar System Simulation");
     SetTargetFPS(60);
+    vector<Vector2> stars;
 
     Vector2 sunPosition = {screenWidth / 2.0f, screenHeight / 2.0f};
     float sunRadius{50.0f};
@@ -80,6 +97,7 @@ int main()
 
         // Draw the sun
         DrawCircleV(sunPosition, sunRadius * zoom, YELLOW);
+        DrawStarsOnce(stars, screenWidth, screenHeight, 2000);
 
         // Draw the planets
         for (const auto& planet : planets) {
